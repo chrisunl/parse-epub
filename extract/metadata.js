@@ -39,8 +39,6 @@ const TAG = 'metadata';
 export default function metadata(parsedRootXml, manifest) {
   let ret = {};
   const metadataInfo = parsedRootXml.package.metadata;
-  const contentRootType = parsedRootXml.package['unique-identifier'];
-  const contentVersionId = (contentRootType == 'pub-id' ? parsedRootXml.package['version'] : 0);
 
   function attribute(attr, required) {
     try {
@@ -48,9 +46,9 @@ export default function metadata(parsedRootXml, manifest) {
       if (Array.isArray(attrInfo) && attr === 'identifier') {
         ret[attr] = attrInfo.find(function (attrItem) { return attrItem.id === uniqueIdentifierId; }).__text;
       } else if (attr === 'contentRootType') {
-        ret['contentRootType'] = contentRootType;
+        ret['contentRootType'] = parsedRootXml.package['unique-identifier'];
       } else if (attr === 'contentVersionId') {
-        ret['contentVersionId'] = contentVersionId;
+        ret['contentVersionId'] = parsedRootXml.package['version'];
       } else {
         ret[attr] = attrInfo.__text;
       }
