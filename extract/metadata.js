@@ -20,7 +20,8 @@ const ATTRIBUTES = {
     'identifier',
     'language',
     'title',
-    'uniqueIdentifierId'
+    'contentRootType',
+    'contentVersionId'
   ],
   PROPERTIES: {
     mediaActiveClass: 'media:active-class',
@@ -38,15 +39,18 @@ const TAG = 'metadata';
 export default function metadata(parsedRootXml, manifest) {
   let ret = {};
   const metadataInfo = parsedRootXml.package.metadata;
-  const uniqueIdentifierId = parsedRootXml.package['unique-identifier'];
+  const contentRootType = parsedRootXml.package['unique-identifier'];
+  const contentVersionId = (contentRootType == 'pub-id' ? parsedRootXml.package['version'] : 0);
 
   function attribute(attr, required) {
     try {
       const attrInfo = metadataInfo[attr];
       if (Array.isArray(attrInfo) && attr === 'identifier') {
-        ret[attr] = attrInfo.find(attrItem => attrItem.id === uniqueIdentifierId).__text;
-      } else if (attr === 'uniqueIdentifierId') {
-        ret['contentRootType'] = uniqueIdentifierId;
+        ret[attr] = attrInfo.find(function (attrItem) { return attrItem.id === uniqueIdentifierId; }).__text;
+      } else if (attr === 'contentRootType') {
+        ret['contentRootType'] = contentRootType;
+      } else if (attr === 'contentVersionId') {
+        ret['contentVersionId'] = contentVersionId;
       } else {
         ret[attr] = attrInfo.__text;
       }
