@@ -19,7 +19,8 @@ const ATTRIBUTES = {
   REQUIRED: [
     'identifier',
     'language',
-    'title'
+    'title',
+    'uniqueIdentifierId'
   ],
   PROPERTIES: {
     mediaActiveClass: 'media:active-class',
@@ -44,13 +45,15 @@ export default function metadata(parsedRootXml, manifest) {
       const attrInfo = metadataInfo[attr];
       if (Array.isArray(attrInfo) && attr === 'identifier') {
         ret[attr] = attrInfo.find(attrItem => attrItem.id === uniqueIdentifierId).__text;
+      } else if (attr === 'uniqueIdentifierId') {
+        ret['contentRootType'] = uniqueIdentifierId;
       } else {
         ret[attr] = attrInfo.__text;
       }
     } catch(exception) {
       if (required) {
         ret[attr] = undefined;
-        console.error(`Can't get required attribute '${attr}' on metadata.`);
+        console.error(("Can't get required attribute '" + attr + "' on metadata."));
       }
     }
   }
