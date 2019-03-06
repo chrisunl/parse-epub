@@ -19,9 +19,7 @@ const ATTRIBUTES = {
   REQUIRED: [
     'identifier',
     'language',
-    'title',
-    'contentRootType',
-    'contentVersionId'
+    'title'
   ],
   PROPERTIES: {
     mediaActiveClass: 'media:active-class',
@@ -45,10 +43,6 @@ export default function metadata(parsedRootXml, manifest) {
       const attrInfo = metadataInfo[attr];
       if (Array.isArray(attrInfo) && attr === 'identifier') {
         ret[attr] = attrInfo.find(function (attrItem) { return attrItem.id === uniqueIdentifierId; }).__text;
-      } else if (attr === 'contentRootType') {
-        ret['contentRootType'] = parsedRootXml.package['unique-identifier'];
-      } else if (attr === 'contentVersionId') {
-        ret['contentVersionId'] = parsedRootXml.package['version'];
       } else {
         ret[attr] = attrInfo.__text;
       }
@@ -63,6 +57,7 @@ export default function metadata(parsedRootXml, manifest) {
   ATTRIBUTES.OPTIONAL.forEach(attr => attribute(attr, false));
   ATTRIBUTES.REQUIRED.forEach(attr => attribute(attr, true));
 
+  ret.package = parsedRootXml.package;
   ret.coverHref = coverHref(manifest);
   ret.mediaOverlayDurations = [];
   ret.mediaDuration;
