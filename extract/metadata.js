@@ -57,6 +57,7 @@ export default function metadata(parsedRootXml, manifest) {
   ATTRIBUTES.OPTIONAL.forEach(attr => attribute(attr, false));
   ATTRIBUTES.REQUIRED.forEach(attr => attribute(attr, true));
 
+  // exposing package.metadata to allow access to content-version-id and product-object-id for analytics in RCE
   ret.packageData = parsedRootXml.package.metadata;
   ret.coverHref = coverHref(manifest);
   ret.mediaOverlayDurations = [];
