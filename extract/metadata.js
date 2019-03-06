@@ -57,7 +57,7 @@ export default function metadata(parsedRootXml, manifest) {
   ATTRIBUTES.OPTIONAL.forEach(attr => attribute(attr, false));
   ATTRIBUTES.REQUIRED.forEach(attr => attribute(attr, true));
 
-  ret.package = parsedRootXml.package;
+  ret.packageData = parsedRootXml.package.metadata;
   ret.coverHref = coverHref(manifest);
   ret.mediaOverlayDurations = [];
   ret.mediaDuration;
